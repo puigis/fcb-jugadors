@@ -1,1 +1,30 @@
+name: Actualitzar jugadors FCB
 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  actualitzar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ordenar carpetes
+        run: |
+          mkdir -p scripts data
+          if [ -f actualitzar_jugadors.py ]; then git mv actualitzar_jugadors.py scripts/; fi
+          if [ -f jugadors.csv ]; then git mv jugadors.csv data/; fi
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4
+      - run: python scripts/actualitzar_jugadors.py
+      - name: Desar canvis
+        run: |
+          git config user.name "actualitzador-fcb"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Actualització jugadors $(date +%F)"
+          git push
