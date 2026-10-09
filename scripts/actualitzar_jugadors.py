@@ -62,7 +62,7 @@ def jugadors_lliga(id_lliga):
             continue
         id_club = m.group(2)
         p = sopa(f"/frontend/lligues/participants/{id_lliga}/{id_club}")
-        mc = re.search(r"del club (.+)", p.get_text("\n"))
+        mc = re.search(r"del club\s+([^\n]+)", p.get_text())
         club = mc.group(1).strip() if mc else "?"
         for tr in p.select("table tbody tr"):
             td = tr.find_all("td")
@@ -106,6 +106,9 @@ def main():
 
     if len(nou) < 100:
         raise SystemExit(f"Només {len(nou)} jugadors: sembla un error, no toco res")
+    sense_club = sum(1 for r in nou.values() if r["club"] == "?")
+    if sense_club > len(nou) // 10:
+        raise SystemExit(f"{sense_club} jugadors sense club: la web ha canviat, no toco res")
 
     altes, canvis_club, baixes, final = [], [], [], {}
     for k, r in nou.items():
@@ -116,7 +119,7 @@ def main():
         r["alta"] = a["alta"] if a and a.get("alta") else avui
         if not a:
             altes.append(f"{r['nom']} ({r['club']})")
-        elif a["club"] != r["club"]:
+        elif a["club"] not in ("?", r["club"]):
             canvis_club.append(f"{r['nom']}: {a['club']} -> {r['club']}")
         final[k] = r
     for k, a in antic.items():
