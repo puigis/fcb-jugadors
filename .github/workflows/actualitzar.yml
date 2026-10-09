@@ -2,6 +2,8 @@ name: Actualitzar jugadors FCB
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"   # cada dilluns a les 6:00 UTC (8:00 a Barcelona a l'estiu, 7:00 a l'hivern)
 
 permissions:
   contents: write
