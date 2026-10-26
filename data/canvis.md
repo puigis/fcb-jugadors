@@ -698,3 +698,13 @@
 **Ja no inscrits** (1)
 
 - JEREZ LOZANO, GUILLERMO (C.B.VILANOVA)
+
+## 2026-10-26
+
+**Altes** (1)
+
+- AMAYA AMADOR, ANTONIO (C.B.2000 CERDANYOLA)
+
+**Ja no inscrits** (1)
+
+- CERVERA MUR, JORDI (C.B.VILANOVA)
